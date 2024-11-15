@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>All Employees</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1> Employee </h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<table class="table">
+					<thead>
+						<tr>
+							<th> Employee </th>
+							<th> Department </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${emps.empty}">
+							<td colspan="2"> No Employee Available </td>
+						</tr>
+						<tr th:each="Employee : ${emps}">
+							<td><span th:text="${Employee.empName}"> Employee </span></td>
+							<td><span th:text="${Employee.departmentName}"> Department </span></td>
+							<td><a class="btn btn-success" href="#"
+									th:href="@{/showFormForUpdate/{id}(id=${Employee.empId})}"> Edit </a></td>
+							<td><a class="btn btn-success" href="#"
+									th:href="@{/deleteEmployee/{id}(id=${Employee.empId})}"> Delete </a></td>
+
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<a class="btn btn-success" href="#" th:href="@{/createEmployee}"> Add Employee </a>
+				<a class="btn btn-success" href="#" th:href="@{/dept/getDeprtment}"> Department </a>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

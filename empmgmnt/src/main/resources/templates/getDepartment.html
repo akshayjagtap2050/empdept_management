@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>All Employees</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1> Departments </h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<table class="table">
+					<thead>
+						<tr>
+							<th> Id </th>
+							<th> Department </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${depts.empty}">
+							<td colspan="2"> No Department Available </td>
+						</tr>
+						<tr th:each="Department : ${depts}">
+							<td><span th:text="${Department.deptId}"> Employee </span></td>
+							<td><span th:text="${Department.deptName}"> Department </span></td>
+
+							<td><a class="btn btn-success" href="#"
+									th:href="@{/showFormForDeptUpdate/{id}(id=${Department.deptId})}"> Edit </a></td>
+
+
+						</tr>
+						
+					</tbody>
+
+				</table>
+				
+			</div>
+			<div class="col-md-6">
+				<a class="btn btn-success" href="#" th:href="@{/addDepartment}"> Add Department </a>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

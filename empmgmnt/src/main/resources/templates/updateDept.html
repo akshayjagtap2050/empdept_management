@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div class="container">
+		<h1>Employee Management System</h1>
+		<hr>
+		<h2>Update Deartment</h2>
+
+		<form method="post" role="form" th:action="@{/updateDept}" th:object="${dept}">
+			<input type="hidden" th:field="*{deptId}" />
+			<p>Department Name: <input type="text" th:field="*{deptName}" /></p>
+
+
+			<div class="form-group">
+				<button class="btn btn-primary" type="submit">Save</button>
+			</div>
+
+		</form>
+
+
+		<hr>
+
+	<!--	<a th:href="@{/}"> Back to Employee List</a>-->
+	</div>
+</body>
+
+</html>
