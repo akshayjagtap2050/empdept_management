@@ -15,8 +15,8 @@
 		<hr>
 		<h2>Update Employee</h2>
 
-		<form method="post" role="form" th:action="@{/updateEmp}" th:object="${user}">
-			  <input type="hidden" th:field="*{empId}" />
+		<form th:method="PUT" role="form" th:action="@{/emp/updateEmp}" th:object="${emp}">
+			<input type="hidden" th:field="*{empId}" />
 			<p>Name: <input type="text" th:field="*{empName}" /></p>
 			<p>Email: <input type="text" th:field="*{empEmail}" /></p>
 			<p>Designation: <input type="text" th:field="*{empDesignation}" /></p>

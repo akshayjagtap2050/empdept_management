@@ -29,9 +29,16 @@
 							<td><span th:text="${Employee.empName}"> Employee </span></td>
 							<td><span th:text="${Employee.departmentName}"> Department </span></td>
 							<td><a class="btn btn-success" href="#"
-									th:href="@{/showFormForUpdate/{id}(id=${Employee.empId})}"> Edit </a></td>
-							<td><a class="btn btn-success" href="#"
-									th:href="@{/deleteEmployee/{id}(id=${Employee.empId})}"> Delete </a></td>
+									th:href="@{/emp/showFormForUpdate/{id}(id=${Employee.empId})}"> Edit </a></td>
+
+
+							<td>
+								<form th:action="@{/emp/deleteEmployee/{id}(id=${Employee.empId})}" th:method="delete">
+									<button class="btn btn-success">delete</button>
+								</form>
+
+
+							</td>
 
 
 						</tr>
@@ -39,7 +46,7 @@
 				</table>
 			</div>
 			<div class="col-md-6">
-				<a class="btn btn-success" href="#" th:href="@{/createEmployee}"> Add Employee </a>
+				<a class="btn btn-success" href="#" th:href="@{/emp/createEmployee}"> Add Employee </a>
 				<a class="btn btn-success" href="#" th:href="@{/dept/getDeprtment}"> Department </a>
 			</div>
 		</div>

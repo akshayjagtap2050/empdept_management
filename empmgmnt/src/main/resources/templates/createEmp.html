@@ -40,7 +40,7 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<form method="post" role="form" th:action="@{/save}" th:object="${user}">
+					<form method="post" role="form" th:action="@{/emp/saveEmp}" th:object="${emp}">
 						<p>Name: <input type="text" th:field="*{empName}" /></p>
 						<p>Email: <input type="text" th:field="*{empEmail}" /></p>
 						<p>Designation: <input type="text" th:field="*{empDesignation}" /></p>

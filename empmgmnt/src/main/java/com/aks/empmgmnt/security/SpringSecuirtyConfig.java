@@ -38,7 +38,7 @@ public class SpringSecuirtyConfig {
 		http.authorizeHttpRequests((requests) -> requests.requestMatchers("/login", "/logout", "/public/**").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/user/**").hasRole("USER").anyRequest()
 				.authenticated())
-				.formLogin((form) -> form.loginPage("/login").successHandler(customAuthenticationSuccessHandler)
+				.formLogin((form) -> form.loginPage("/emp/login").successHandler(customAuthenticationSuccessHandler)
 						.permitAll());
 
 		// we can add jwt filter

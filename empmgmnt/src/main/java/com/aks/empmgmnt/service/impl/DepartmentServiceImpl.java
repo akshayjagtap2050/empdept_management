@@ -8,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aks.empmgmnt.dto.DeptRequestDto;
 import com.aks.empmgmnt.entity.Department;
 import com.aks.empmgmnt.entity.Employee;
 import com.aks.empmgmnt.exception.DeaprtmentExistException;
 import com.aks.empmgmnt.exception.DepartmentNotFoundExcpetion;
 import com.aks.empmgmnt.exception.EmployeeNotFoundExcpetion;
+import com.aks.empmgmnt.mapper.DeptMapper;
 import com.aks.empmgmnt.repository.DepartmentRepository;
 import com.aks.empmgmnt.service.DepartmentService;
 
@@ -25,19 +27,21 @@ public class DepartmentServiceImpl implements DepartmentService {
 	DepartmentRepository departmentRepository;
 
 	@Override
-	public List<Department> getAllDepartmentList() {
-		logger.info("Fetching all departments");
+	public List<DeptRequestDto> getAllDepartmentList() {
 
 		List<Department> departments = departmentRepository.findAll();
 
 		logger.info("departments size:" + departments.size());
 
-		return departments;
+		return DeptMapper.toDeptDtoList(departments);
 	}
 
 	@Override
-	public void saveDepartment(Department department) {
+	public void saveDepartment(DeptRequestDto DeptRequestDto) {
 		// TODO Auto-generated method stub
+
+		Department department = DeptMapper.mapToDept(DeptRequestDto);
+
 		Optional<Department> dep = departmentRepository.findBydeptName(department.getDeptName());
 		if (dep.isPresent()) {
 			logger.error("there is already an department existed with this name: {}", department.getDeptName());
@@ -45,39 +49,38 @@ public class DepartmentServiceImpl implements DepartmentService {
 					"there is already an department existed with this name:{} " + department.getDeptName());
 		}
 
-		Department dept = new Department();
-		dept.setDeptName(department.getDeptName().toUpperCase());
-		Department savedDept = departmentRepository.save(dept);
+		department.setDeptName(department.getDeptName().toUpperCase());
+		Department savedDept = departmentRepository.save(department);
 		logger.info("Saved new department with ID: {}", savedDept.getDeptId());
 	}
 
 	@Override
-	public Department findDeptById(Integer id) {
+	public DeptRequestDto findDeptById(Integer id) {
 		// TODO Auto-generated method stub
-		Department department = departmentRepository.findById(id).get();
+		Optional<Department> dep = departmentRepository.findById(id);
+		if (!dep.isPresent()) {
+			logger.error("Dept not found with id: {}", id);
+			throw new DepartmentNotFoundExcpetion("Dept not found: " + id);
+		}
 
-		return department;
+		return DeptMapper.mapToDeptDto(dep.get());
 	}
 
 	@Override
-	public void updateDepartment(Department department) {
-		// TODO Auto-generated method stub
-		logger.info("Updating dept with id: {}", department.getDeptId());
+	public void updateDepartment(DeptRequestDto deptRequestDto) {
 
-		Optional<Department> existingDept = departmentRepository.findById(department.getDeptId());
+		Optional<Department> existingDept = departmentRepository.findById(deptRequestDto.getDeptId());
 
 		if (!existingDept.isPresent()) {
-			logger.error("Dept not found with id: {}", department.getDeptId());
-			throw new DepartmentNotFoundExcpetion("Dept not found: " + department.getDeptId());
+			logger.error("Dept not found with id: {}", deptRequestDto.getDeptName());
+			throw new DepartmentNotFoundExcpetion("Dept not found: " + deptRequestDto.getDeptName());
 		}
 
-		existingDept.get().setDeptName(department.getDeptName());
+		existingDept.get().setDeptName(deptRequestDto.getDeptName().toUpperCase());
 
 		departmentRepository.save(existingDept.get());
 
-		logger.info("Successfully updated dept with ID: {}" + department.getDeptId());
-
-		// return null;
+		logger.info("Successfully updated dept with ID: {}" + deptRequestDto.getDeptName());
 	}
 
 }

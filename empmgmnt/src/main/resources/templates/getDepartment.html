@@ -30,7 +30,7 @@
 							<td><span th:text="${Department.deptName}"> Department </span></td>
 
 							<td><a class="btn btn-success" href="#"
-									th:href="@{/showFormForDeptUpdate/{id}(id=${Department.deptId})}"> Edit </a></td>
+									th:href="@{/dept/showFormForDeptUpdate/{id}(id=${Department.deptId})}"> Edit </a></td>
 
 
 						</tr>
@@ -41,7 +41,7 @@
 				
 			</div>
 			<div class="col-md-6">
-				<a class="btn btn-success" href="#" th:href="@{/addDepartment}"> Add Department </a>
+				<a class="btn btn-success" href="#" th:href="@{/dept/addDepartment}"> Add Department </a>
 			</div>
 		</div>
 	</div>

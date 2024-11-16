@@ -7,7 +7,7 @@
 		<hr>
 		<h2>Update Deartment</h2>
 
-		<form method="post" role="form" th:action="@{/updateDept}" th:object="${dept}">
+		<form th:method="PUT" role="form" th:action="@{/dept/updateDept}" th:object="${dept}">
 			<input type="hidden" th:field="*{deptId}" />
 			<p>Department Name: <input type="text" th:field="*{deptName}" /></p>
 
@@ -21,7 +21,7 @@
 
 		<hr>
 
-	<!--	<a th:href="@{/}"> Back to Employee List</a>-->
+		<!--	<a th:href="@{/}"> Back to Employee List</a>-->
 	</div>
 </body>
 

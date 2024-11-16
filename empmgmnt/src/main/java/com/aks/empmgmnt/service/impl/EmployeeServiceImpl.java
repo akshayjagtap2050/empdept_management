@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aks.empmgmnt.dto.EmpRequestDto;
-import com.aks.empmgmnt.dto.EmployeeDto;
 import com.aks.empmgmnt.entity.Department;
 import com.aks.empmgmnt.entity.Employee;
 import com.aks.empmgmnt.exception.DepartmentNotFoundExcpetion;
 import com.aks.empmgmnt.exception.EmployeeNotFoundExcpetion;
+import com.aks.empmgmnt.mapper.EmpMapper;
 import com.aks.empmgmnt.repository.DepartmentRepository;
 import com.aks.empmgmnt.repository.EmployeeRepository;
 import com.aks.empmgmnt.service.EmployeeService;
@@ -31,23 +31,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 	DepartmentRepository departmentRepository;
 
 	@Override
-	public List<EmployeeDto> getAllEmployeeList() {
-		// TODO Auto-generated method stub
-		logger.info("Fetching all employees");
+	public List<EmpRequestDto> getAllEmployeeList() {
 
 		List<Employee> employeeList = employeeRepository.findAll();
 
-		return employeeList.stream()
-				.map(employee -> new EmployeeDto(employee.getEmpId(), employee.getEmpName(),
-						employee.getEmpDesignation(), employee.getEmpAge(),
-						(employee.getDepartment() != null ? employee.getDepartment().getDeptName() : null)))
-				.collect(Collectors.toList());
+		List<EmpRequestDto> empRequestDtos = EmpMapper.empToDtoList(employeeList);
+
+		return empRequestDtos;
 	}
 
 	@Override
 	public EmpRequestDto saveEmployee(EmpRequestDto empRequestDto) {
-		// TODO Auto-generated method stub
-		logger.info("checking if entered email already exists or not: {}", empRequestDto.getEmpName());
 
 		Optional<Employee> existingUser = employeeRepository.findByempEmail(empRequestDto.getEmpEmail());
 
@@ -57,13 +51,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 					"there is already an account existed with this email:{} " + empRequestDto.getEmpEmail());
 		}
 
-		logger.info("Saving a new employee with name: {}", empRequestDto.getEmpName());
-		Employee emp = new Employee();
-		emp.setEmpName(empRequestDto.getEmpName());
-		emp.setEmpDesignation(empRequestDto.getEmpDesignation());
-		emp.setEmpEmail(empRequestDto.getEmpEmail());
-		emp.setEmpAge(empRequestDto.getEmpAge());
-
 		Optional<Department> dept = departmentRepository
 				.findBydeptName(empRequestDto.getDepartmentName().toUpperCase());
 		if (!dept.isPresent()) {
@@ -71,50 +58,44 @@ public class EmployeeServiceImpl implements EmployeeService {
 			throw new DepartmentNotFoundExcpetion("Department not found: " + empRequestDto.getDepartmentName());
 		}
 
-		logger.info("department availble: {}", empRequestDto.getEmpName());
-
-		emp.setDepartment(dept.get());
+		Employee emp = EmpMapper.mapToEmp(empRequestDto, dept.get());
 
 		emp = employeeRepository.save(emp);
 
-		logger.info("Successfully saved employee with ID: {}", emp.getEmpId());
+		logger.info("Successfully saved employee with ID: {}", emp.getEmpEmail());
 
 		return null;
 	}
 
 	@Override
-	public void deleteEmployeeById(Integer id) {
+	public boolean deleteEmployeeById(Integer id) {
 		// TODO Auto-generated method stub
-		this.employeeRepository.deleteById(id);
+		Employee employee = employeeRepository.findById(id)
+				.orElseThrow(() -> new EmployeeNotFoundExcpetion("id not found:" + id));
+
+		employeeRepository.deleteById(id);
+		return true;
 	}
 
 	@Override
 	public EmpRequestDto findEmpById(Integer id) {
 		// TODO Auto-generated method stub
 
-		Employee emp = employeeRepository.findById(id).get();
+		Employee emp = employeeRepository.findById(id)
+				.orElseThrow(() -> new EmployeeNotFoundExcpetion("id not found:" + id));
 
-		return new EmpRequestDto(emp.getEmpId(), emp.getEmpName(), emp.getEmpDesignation(), emp.getEmpEmail(),
-				emp.getEmpAge(), emp.getDepartment().getDeptName());
-
+		return EmpMapper.mapToEmpDto(emp);
 	}
 
 	@Override
 	public void updateEmployee(EmpRequestDto empRequestDto) {
-		// TODO Auto-generated method stub
-		logger.info("Updating employee with email: {}", empRequestDto.getEmpEmail());
 
-		Optional<Employee> existingUser = employeeRepository.findById(empRequestDto.getEmpId());
+		Optional<Employee> existingEmp = employeeRepository.findById(empRequestDto.getEmpId());
 
-		if (!existingUser.isPresent()) {
-			logger.error("Employee not found with id: {}", empRequestDto.getEmpId());
-			throw new EmployeeNotFoundExcpetion("Employee not found: " + empRequestDto.getEmpId());
+		if (!existingEmp.isPresent()) {
+			logger.error("Employee not found with id: {}", empRequestDto.getEmpEmail());
+			throw new EmployeeNotFoundExcpetion("Employee not found: " + empRequestDto.getEmpEmail());
 		}
-
-		existingUser.get().setEmpName(empRequestDto.getEmpName());
-		existingUser.get().setEmpDesignation(empRequestDto.getEmpDesignation());
-		existingUser.get().setEmpAge(empRequestDto.getEmpAge());
-		existingUser.get().setEmpEmail(empRequestDto.getEmpEmail());
 
 		Optional<Department> dept = departmentRepository
 				.findBydeptName(empRequestDto.getDepartmentName().toUpperCase());
@@ -124,9 +105,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 			throw new DepartmentNotFoundExcpetion("Department not found: " + empRequestDto.getDepartmentName());
 		}
 
-		existingUser.get().setDepartment(dept.get());
+		existingEmp = Optional.of(EmpMapper.mapToEmp(empRequestDto, dept.get()));
 
-		employeeRepository.save(existingUser.get());
+		employeeRepository.save(existingEmp.get());
 
 		logger.info("Successfully updated employee with ID: {}" + empRequestDto.getEmpId());
 
