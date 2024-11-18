@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class DeptRequestDto {
 	
-	private Integer deptId;
+	private Long deptId;
 
 	@NotEmpty(message = "Department name can not be null or empty")
 	private String deptName;

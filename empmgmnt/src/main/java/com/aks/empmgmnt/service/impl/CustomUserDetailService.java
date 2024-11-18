@@ -26,7 +26,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Optional<User> user = userRepository.findByUsername(username);
-		
+
 		if (user.isEmpty()) {
 			throw new EmployeeNotFoundExcpetion("Invalid username or password.");
 		}
@@ -36,7 +36,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
 		return new org.springframework.security.core.userdetails.User(user.get().getUsername(),
 				user.get().getPassword(), authorities);
-
 	}
 
 }

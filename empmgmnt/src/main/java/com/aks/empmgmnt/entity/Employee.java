@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer empId;
+	private Long empId;
 
 	private String empName;
 
@@ -23,18 +23,17 @@ public class Employee {
 
 	private String empEmail;
 
-
 	private Integer empAge;
 
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "department")
 	private Department department;
 
-	public Integer getEmpId() {
+	public Long getEmpId() {
 		return empId;
 	}
 
-	public void setEmpId(Integer empId) {
+	public void setEmpId(Long empId) {
 		this.empId = empId;
 	}
 

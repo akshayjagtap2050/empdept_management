@@ -62,7 +62,7 @@ public class DepartmentController {
 	}
 
 	@GetMapping("/showFormForDeptUpdate/{id}")
-	public String showFormForUpdate(@PathVariable(value = "id") Integer id, Model model) {
+	public String showFormForUpdate(@PathVariable(value = "id") Long id, Model model) {
 
 		logger.info("called: showFormForDeptUpdate id: " + id);
 

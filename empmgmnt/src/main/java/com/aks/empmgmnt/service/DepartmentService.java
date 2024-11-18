@@ -10,7 +10,7 @@ public interface DepartmentService {
 
 	public void saveDepartment(DeptRequestDto deptRequestDto);
 
-	public DeptRequestDto findDeptById(Integer id);
+	public DeptRequestDto findDeptById(Long id);
 
 	public void updateDepartment(DeptRequestDto dpDeptRequestDto);
 	

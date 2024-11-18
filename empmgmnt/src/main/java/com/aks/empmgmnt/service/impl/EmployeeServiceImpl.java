@@ -2,7 +2,6 @@ package com.aks.empmgmnt.service.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public boolean deleteEmployeeById(Integer id) {
+	public boolean deleteEmployeeById(Long id) {
 		// TODO Auto-generated method stub
 		Employee employee = employeeRepository.findById(id)
 				.orElseThrow(() -> new EmployeeNotFoundExcpetion("id not found:" + id));
@@ -78,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public EmpRequestDto findEmpById(Integer id) {
+	public EmpRequestDto findEmpById(Long id) {
 		// TODO Auto-generated method stub
 
 		Employee emp = employeeRepository.findById(id)

@@ -10,9 +10,9 @@ public interface EmployeeService {
 
 	public EmpRequestDto saveEmployee(EmpRequestDto empRequestDto);
 
-	public boolean deleteEmployeeById(Integer id);
+	public boolean deleteEmployeeById(Long id);
 
-	public EmpRequestDto findEmpById(Integer id);
+	public EmpRequestDto findEmpById(Long id);
 
 	public void updateEmployee(EmpRequestDto em);
 

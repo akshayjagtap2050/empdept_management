@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmpRequestDto {
 
-	private Integer empId;
+	private Long empId;
 
 	@NotEmpty(message = "Employee name can not be null or empty")
 	private String empName;

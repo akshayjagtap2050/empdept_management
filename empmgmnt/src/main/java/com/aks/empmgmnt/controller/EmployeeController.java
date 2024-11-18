@@ -51,7 +51,7 @@ public class EmployeeController {
 	}
 
 	@DeleteMapping("/deleteEmployee/{id}")
-	public String deleteEmployee(@PathVariable(value = "id") Integer id) {
+	public String deleteEmployee(@PathVariable(value = "id") Long id) {
 
 		boolean isDeleted = employeeService.deleteEmployeeById(id);
 
@@ -83,7 +83,7 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/showFormForUpdate/{id}")
-	public String showFormForUpdate(@PathVariable(value = "id") Integer id, Model model) {
+	public String showFormForUpdate(@PathVariable(value = "id") Long id, Model model) {
 
 		// get employee from the service
 		EmpRequestDto employee = employeeService.findEmpById(id);

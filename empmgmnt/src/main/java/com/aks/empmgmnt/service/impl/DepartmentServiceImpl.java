@@ -55,7 +55,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public DeptRequestDto findDeptById(Integer id) {
+	public DeptRequestDto findDeptById(Long id) {
 		// TODO Auto-generated method stub
 		Optional<Department> dep = departmentRepository.findById(id);
 		if (!dep.isPresent()) {
